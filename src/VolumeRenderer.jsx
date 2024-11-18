@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import * as nifti from 'nifti-reader-js';
-import { AmbientLight, BoxGeometry, Color, DirectionalLight, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { AdditiveBlending, AmbientLight, BoxGeometry, BufferAttribute, BufferGeometry, Color, DirectionalLight, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Points, PointsMaterial, Scene, WebGLRenderer } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const VolumeRenderer = () => {
@@ -36,22 +36,25 @@ const VolumeRenderer = () => {
     function createVolumeFromNiftiData(volume, dims, voxelSize = 1) {
         const finalVolume = new Group();
         const [width, height, depth] = dims;
-        for(let z = 0; z < 18; z++) {
+        for(let z = 30; z < 50; z++) {
           for(let y = 0; y < height; y++) {
             for(let x = 0; x < width; x++) {
               const index = x + y * width + z * width * height;
               const intensity = volume[index];
               if(intensity != 0) {
-                const geometry = new BoxGeometry(1, 1, 1);
-                const material = new MeshStandardMaterial({
-                  color: new Color(intensity, intensity, intensity),
+                const geometry = new BufferGeometry();
+                geometry.setAttribute('position', new BufferAttribute(new Float32Array([x - 350, y - 254, z]), 3));
+                geometry.setAttribute('color', new BufferAttribute(new Float32Array([1.0, 0.0, 0.0]), 3)); // Add color attribute
+                const material = new PointsMaterial({
+                  size: 0.05,
+                  sizeAttenuation: true,
                   transparent: true,
-                  opacity: 1
+                  depthWrite: false,
+                  blending: AdditiveBlending,
+                  vertexColors: true,
                 })
-                const cube = new Mesh(geometry, material);
-                cube.position.set(x - 350, y - 254, z);
-                console.log(x, y, z, intensity)
-                finalVolume.add(cube);
+                const particles = new Points(geometry, material);
+                finalVolume.add(particles);
               }
             }
           }
@@ -85,7 +88,7 @@ const VolumeRenderer = () => {
         }
     
         const camera = new PerspectiveCamera(60, 1920 / 1080, 1.0, 1000.0);
-        camera.position.set(358, 257, 1);
+        camera.position.set(0, 0, 5);
           
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
@@ -107,35 +110,6 @@ const VolumeRenderer = () => {
 
         function animate() {
             requestAnimationFrame(animate);
-
-            // if(z < dims[2]) {
-            //     if(y < dims[1]) {
-            //         if(x < dims[0]) {
-            //             const index = x + y * dims[0] + z * dims[0] * dims[1];
-            //             const intensity = volume[index];
-            //             if(intensity != 0) {
-            //                 const geometry = new BoxGeometry(1, 1, 1);
-            //                 const material = new MeshStandardMaterial({
-            //                 color: new Color(intensity, intensity, intensity),
-            //                 transparent: true,
-            //                 opacity: 1
-            //                 })
-            //                 const cube = new Mesh(geometry, material);
-            //                 cube.position.set(x - 350, y - 254, z);
-            //                 scene.add(cube);
-            //             }
-            //             x++;
-            //         } else {
-            //             y++;
-            //             x = 0;
-            //         }
-            //     } else {
-            //         z++;
-            //         y = 0;
-            //         x = 0;
-            //     }
-            // }
-
             renderer.render(scene, camera)
         }
         animate();
