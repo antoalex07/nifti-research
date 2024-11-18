@@ -42,7 +42,7 @@ const MarchingCubes = () => {
             for(let y = 0; y < height; y++) {
                 for(let x = 0; x < width; x++) {
                     const originalIndex = x + y * width + z * width * height;
-                    const paddedIndex = (x + 1) + (y + 1) * width + (z + 1) * width * height;
+                    const paddedIndex = (x + 1) + (y + 1) * (width + 1) + (z + 1) * (width + 1) * (height + 1);
                     
                     if(volume[originalIndex] != 0)
                         filteredVolume[paddedIndex] = 1; 
@@ -50,9 +50,9 @@ const MarchingCubes = () => {
             }
         }
 
-        for(let z = 0; z < 20; z++) {
-            for(let y = 0; y < height; y++) {
-                for(let x = 0; x < width; x++) {
+        for(let z = 0; z < 50; z++) {
+            for(let y = 0; y < height + 1; y++) {
+                for(let x = 0; x < width + 1; x++) {
                     const v0 = x + y * width + z * width * height; 
                     const v1 = v0 + 1; 
                     const v2 = v0 + width;
