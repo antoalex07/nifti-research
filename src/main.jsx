@@ -8,6 +8,6 @@ import VolumeRenderer from './VolumeRenderer.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MarchingCubes />
+    <VolumeRenderer />
   </StrictMode>,
 )
