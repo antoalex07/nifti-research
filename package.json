@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@niivue/niivue": "^0.46.0",
     "@react-three/drei": "^9.116.0",
     "@react-three/fiber": "^8.17.10",
     "nifti-reader-js": "^0.6.8",
+    "pako": "^2.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.0.1",
     "three": "^0.170.0"
   },
   "devDependencies": {
