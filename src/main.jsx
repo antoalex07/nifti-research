@@ -1,13 +1,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
-import MarchingCubes from './MarchingCubes.jsx'
-import VolumeRenderer from './VolumeRenderer.jsx'
-// import Combine from './Combine.jsx'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import App from './App'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <VolumeRenderer />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/*' element={<App/>} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
